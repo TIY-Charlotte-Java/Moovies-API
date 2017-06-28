@@ -5,6 +5,7 @@ import com.example.mooviesapi.models.MovieList;
 import com.example.mooviesapi.repositories.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +49,9 @@ public class MooviesController {
     @CrossOrigin
     @RequestMapping(path="/movies", method = RequestMethod.GET)
     public List<Movie> getRandomMovies() {
-        return (List)moviesRepo.findAll();
+
+        // moviesRepo.findAll() <== giving me 501 results
+
+        return moviesRepo.findAll(new PageRequest(0, 20)).getContent();
     }
 }
