@@ -49,9 +49,20 @@ public class MooviesController {
     @CrossOrigin
     @RequestMapping(path="/movies", method = RequestMethod.GET)
     public List<Movie> getRandomMovies() {
+        // this gives us the total moves count in our database
+        int moviesCount = (int)moviesRepo.count();
 
-        // moviesRepo.findAll() <== giving me 501 results
+        // this is the integer (whole number) that represents
+        // the page size that we're interested in viewing
+        int pageSize = 20;
 
-        return moviesRepo.findAll(new PageRequest(0, 20)).getContent();
+        // total number of pages is the total movie count
+        // divided by how many movies are shown per page
+        int pages = (int)Math.ceil((double)moviesCount / pageSize);
+
+        int randomPage = (int)(Math.random() * pages);
+
+        return moviesRepo.findAll(new PageRequest(randomPage, pageSize)).getContent();
+//        return moviesRepo.findAll(new PageRequest(0, 20)).getContent();
     }
 }
