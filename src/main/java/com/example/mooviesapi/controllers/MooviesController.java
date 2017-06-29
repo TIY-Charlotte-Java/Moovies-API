@@ -79,7 +79,7 @@ public class MooviesController {
             fb.isLiked() ? "" : "not",
 
             // replace the third %s
-            fb.getMovie().getTitle());
+            moviesRepo.findOne(fb.getMovie().getId()).getTitle());
 
 
         feedbackRepo.save(fb);
