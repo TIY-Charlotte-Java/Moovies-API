@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Feedback {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column
