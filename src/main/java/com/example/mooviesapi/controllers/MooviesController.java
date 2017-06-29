@@ -3,6 +3,7 @@ package com.example.mooviesapi.controllers;
 import com.example.mooviesapi.models.Feedback;
 import com.example.mooviesapi.models.Movie;
 import com.example.mooviesapi.models.MovieList;
+import com.example.mooviesapi.repositories.FeedbackRepository;
 import com.example.mooviesapi.repositories.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import java.util.Scanner;
 public class MooviesController {
     @Autowired
     MovieRepository moviesRepo;
+
+    @Autowired
+    FeedbackRepository feedbackRepo;
 
     @PostConstruct
     public void init() throws IOException {
@@ -68,8 +72,22 @@ public class MooviesController {
     @RequestMapping(path="/rating", method = RequestMethod.POST)
     public void giveMovieFeedback(@RequestBody Feedback fb) {
         System.out.printf("%s added some feedback: they did %s like %s\n",
+            // going to replace the first %s
             fb.getName(),
+
+            // replace the second %s
             fb.isLiked() ? "" : "not",
-            moviesRepo.findOne(fb.getMovieId()).getTitle());
+
+            // replace the third %s
+            fb.getMovie().getTitle());
+
+
+        feedbackRepo.save(fb);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path="/ratings", method = RequestMethod.GET)
+    public List<Feedback> ratings() {
+        return (List<Feedback>) feedbackRepo.findAll();
     }
 }

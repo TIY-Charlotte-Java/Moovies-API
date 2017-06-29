@@ -1,12 +1,21 @@
 package com.example.mooviesapi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.*;
 
+@Entity
 public class Feedback {
+    @Id
+    @GeneratedValue
+    int id;
+
+    @Column
     private String name;
+
+    @Column
     private boolean liked;
-    @JsonProperty("movie_id")
-    private int movieId;
+
+    @ManyToOne
+    Movie movie;
 
     public String getName() {
         return name;
@@ -24,11 +33,19 @@ public class Feedback {
         this.liked = liked;
     }
 
-    public int getMovieId() {
-        return movieId;
+    public int getId() {
+        return id;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 }
