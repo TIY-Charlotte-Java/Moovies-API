@@ -1,15 +1,13 @@
 package com.example.mooviesapi.controllers;
 
+import com.example.mooviesapi.models.Feedback;
 import com.example.mooviesapi.models.Movie;
 import com.example.mooviesapi.models.MovieList;
 import com.example.mooviesapi.repositories.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -64,5 +62,14 @@ public class MooviesController {
 
         return moviesRepo.findAll(new PageRequest(randomPage, pageSize)).getContent();
 //        return moviesRepo.findAll(new PageRequest(0, 20)).getContent();
+    }
+
+    @CrossOrigin
+    @RequestMapping(path="/rating", method = RequestMethod.POST)
+    public void giveMovieFeedback(@RequestBody Feedback fb) {
+        System.out.printf("%s added some feedback: they did %s like %s\n",
+            fb.getName(),
+            fb.isLiked() ? "" : "not",
+            moviesRepo.findOne(fb.getMovieId()).getTitle());
     }
 }
